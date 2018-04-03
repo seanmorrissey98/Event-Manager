@@ -4,8 +4,9 @@ import java.util.*;
 
 public class Driver
 {
-	final static String userFileName = "users.txt";
-	private static String currentID;
+	final static String userFileName = "users.txt"; //ID,USERNAME,PASSWORD,USERTYPE
+	private static int currentID;
+	private static int userType;
 	
 	public static void main (String[] args)
 	{
@@ -15,16 +16,13 @@ public class Driver
 		boolean isLoggedIn = loginMethod(username, password);
 		if (isLoggedIn)
 		{
-			if (currentID.equals("A"))
+			if (userType == 1)
 				adminMainMenu();
 			else
 				userMainMenu();
 		}
 	}
-	
-	/**
-	*ASSUMES ADMIN ID IS "A", AND USERS USE NUMBERS.
-	**/
+
 	public static boolean loginMethod(String username, String password)
 	{
 		File userFile = new File(userFileName);
@@ -45,7 +43,8 @@ public class Driver
 						if (username.equals(fileElements[1]) && password.equals(fileElements[2]))
 						{
 							found = true;
-							currentID = ((fileElements[0]));
+							currentID = Integer.parseInt(fileElements[0]);
+							userType = Integer.parseInt(fileElements[3]);
 						}
 					}
 					in.close();
