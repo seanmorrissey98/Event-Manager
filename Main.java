@@ -33,6 +33,71 @@ public class Main
 		
 	}
 
+	public static void adminMenu()
+	{
+		String [] initialOptions = { "Register User", "Facility Menu", "Record Payments", "View Account Statements" };
+		String [] subOptions	 = {"Add Facility","View Facility Availability", "View Facility Bookings", "Remove Facility", "Decommission Facility", "Recommission Facility","Make Booking"};
+	        boolean main = true;
+		int x = 0;
+		while(main && x==0||x==1||x==2||x==3)  // && not null 
+		{	
+		    x = optionBoxs(initialOptions,"Choose an option");
+		    int y = 0;
+		    int z = 0;
+		
+		    switch (x)
+		    {
+			    case 0: createNewUser();
+		        break;
+			    case 1: y = optionBoxs(subOptions,"Choose an option");
+					switch (y)
+					{
+						case 0: createNewFacility();
+						break;
+						case 1: //Facility Availability
+						break;
+						case 2:	//View Facility Bookings		 
+						break;
+						case 3: //Remove Facility
+						break;
+						case 4: //Decommission Facility
+						break;
+						case 5: //Recommission Facility
+						break;
+						case 6: //Make Booking
+						break;
+					}
+                break;
+				case 2: //Record Payments;
+				break;
+				case 3: //View Account Statements;
+				break;
+			}
+		}
+	}
+	
+	public static void userMenu()
+	{
+		String [] initialOptions = { "View Bookings", "View Account Statement"};
+	    boolean main = true;
+		int x = 0;
+		while (main && x==0||x==1||x==2||x==3)  // && not null 
+		{	
+		    x = optionBoxs(initialOptions,"Choose an option");
+		    int y = 0;
+		    switch (x)
+		    {
+			    case 0: //View Bookings
+		        break;
+			    case 1: //View Account Statement
+                break;				
+			}
+		}	
+	}
+	
+	
+	
+	
 
   public static String generatePassword()
 	{
