@@ -1,94 +1,231 @@
-import javax.swing.*;
 import java.io.*;
+import javax.swing.*;
 import java.util.*;
 
-public class Driver
+public class Main
 {
-	final static String userFileName = "users.txt"; //ID,USERNAME,PASSWORD,USERTYPE
+	final static String userFileName="Users.txt";
+	final static String facilityFileName="Facilities.txt";
+	final static String bookingFileName="Bookings.txt";
 	private static int currentID;
-	private static int userType;
+ 	private static int userType;
+	private static ArrayList<User> users		  = new ArrayList<User>();
+	private static ArrayList<Facility> facilities = new ArrayList<Facility>();
+	private static ArrayList<Booking> bookings 	  = new ArrayList<Booking>();
+ 
 	
-	public static void main (String[] args)
+	public static void main(String [] args)
 	{
-		String 	username = JOptionPane.showInputDialog(null, "Enter username");
-		String password = JOptionPane.showInputDialog(null,"Enter password");
+
+		createNewUser();
+		createNewUser();
+				
+			//	System.out.println(users.get(0).getEmail() + "LN23");
+			//	System.out.println(users.get(1).getEmail()+ "LN24");
+		createNewUser();
+		for(int i = 0;i<users.size();i++)
+	{
+			System.out.println(users.get(i).getEmail());
+	}
+	//	System.out.println(users.get(0).getEmail() +"LN26");
+		//System.out.println(users.get(1).getEmail() +"LN27");
+		//System.out.println(users.get(2).getEmail() +"LN28");
 		
-		boolean isLoggedIn = loginMethod(username, password);
-		if (isLoggedIn)
-		{
-			if (userType == 1)
-				adminMainMenu();
-			else
-				userMainMenu();
-		}
 	}
 
-	public static boolean loginMethod(String username, String password)
+
+  public static String generatePassword()
 	{
-		File userFile = new File(userFileName);
-		Scanner in;
-		String[] fileElements;
-		boolean found = false;
-		int loginAttempts = 3;
+		boolean isValidPassword 	= false;
+		int passwordLength			= (int)((Math.random()*3)+8);
+		int positionOfCharacter;
+		String password				= "";
+		String pattern				= "(?=.*?\\d)(?=.*?[a-zA-Z])(?=.*?[^\\w]).{8,}";
+		String possibleCharacters	= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghiklmnopqrstuvwxyz1234567890!£$%^&*()_+=@;.#~/?<>:'-";
+		while(!isValidPassword)
+		{
+			for(int i=0;i<passwordLength;i++)
+			{
+				positionOfCharacter	= (int)(Math.random()*possibleCharacters.length()-1);
+				password			= password+possibleCharacters.substring(positionOfCharacter,positionOfCharacter+1);
+			}
+			if(password.matches(pattern))
+				isValidPassword = true;
+			else
+				password = "";
+		}
+		return password;
+	}
+  
+	public static String menuBox(String options)
+	{
+		String input="";
 		try
 		{
-			if (userFile.exists())
-			{
-				while (!found)
-				{
-					in = new Scanner(userFile);
-					while (in.hasNext())
-					{
-						fileElements = in.nextLine().split(",");
-						if (username.equals(fileElements[1]) && password.equals(fileElements[2]))
-						{
-							found = true;
-							currentID = Integer.parseInt(fileElements[0]);
-							userType = Integer.parseInt(fileElements[3]);
-						}
-					}
-					in.close();
-					if (!found)
-					{
-						loginAttempts--; 
-						if (loginAttempts == 0)
-						{
-							JOptionPane.showMessageDialog(null, "No attempts remaining.");
-							break;
-						}
-						 JOptionPane.showMessageDialog(null, "Incorrect login details.\n" + loginAttempts + " attempt(s) remaining.");
-						username = JOptionPane.showInputDialog(null, "Enter username");
-						password = JOptionPane.showInputDialog(null,"Enter password");
-					}
-					else
-						JOptionPane.showMessageDialog(null, "Successfully logged in as " + username);	
-				}
-			}
+			input = JOptionPane.showInputDialog(null,options);
+			return input;
 		}
 		catch(Exception e)
-		{}
-		return found;
-	} 
-	
-	public static void adminMainMenu() //TESTING METHOD
-	{
-		System.out.println("ADMIN");
-	}
-	
-	public static void userMainMenu() //TESTING METHOD
-	{
-		System.out.println("USER");
-	}
-	
-	
-		public static boolean nameExists(String email) //Diff version searching ArrayList instead of file
-	{ 
-		boolean found = false;	
-		for (int i = 0;i<users.size()-1;i++)
 		{
-			if (users.get(0).getEmail().equals(email))
+		JOptionPane.showMessageDialog(null,"Error: no String entered");
+		return menuBox(options);
+		}
+	}
+	
+	public static int menuBoxInt(String options)
+	{
+		String input="";
+		int inputAsInt=0;
+		try
+		{
+			input=JOptionPane.showInputDialog(null,options);
+			inputAsInt=Integer.parseInt(input);
+			return inputAsInt;
+		}
+		catch(NumberFormatException e)
+		{
+		JOptionPane.showMessageDialog(null,"Error:Input is not a number entered");
+		return menuBoxInt(options);
+		}
+	}
+	
+	public static void createNewUser()
+	{
+		String email	= menuBox("Please enter an email:");
+		while (!(validEmail(email)))
+		{
+			email 		= menuBox("Please enter a valid email:");
+			validEmail(email);
+		}
+		while (nameExists(email))
+		{
+			email 		= menuBox("Email already registered.\nPlease enter another email");
+			nameExists(email);
+		}
+
+		String password	= generatePassword();
+		int userType	= 2;
+		int userId 		= users.size()+1;
+		String info		= aUser.userToString();
+		User aUser;
+		aUser 			= new User(userId, email, password, userType);
+		users.add(aUser);
+		writeFile(info,userFileName);
+	}
+	
+	
+	public static void writeFile(String input, String fileName)
+    {
+		try
+	    {
+            FileWriter aFileWriter = new FileWriter(fileName,true);
+            PrintWriter out 	   = new PrintWriter(aFileWriter);
+	    	out.print(input);
+            out.println();
+            out.close();
+            aFileWriter.close();		
+	    }
+	    catch(Exception e)
+	    {}
+    }
+	
+
+	public static int optionBoxs(String[] options,String whatYouWantItToSay)
+	{
+        int result = JOptionPane.showOptionDialog(null, whatYouWantItToSay, "League Manager", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        return result;
+	}
+	/**
+	  * Searches a file for a given string in a given position and regenerates the file without the line
+	  * Copies every line from the file except the specified line and writes them to a temp file
+	  * The original file is then deleted and the temp file is renamed to the name of the original file
+	  * Input: Takes the filename, the string item to search for, and its position in a line
+	  **/
+	public static void removeLineFromFile(String fileName, String itemInLineToDel, int pos)
+	{
+		try 
+		{
+		    String[] fileElements;
+			String line = "";
+			File inFile = new File(fileName);
+			if (!inFile.isFile()) 
+			{
+				System.out.println("Parameter is not an existing file");
+				return;
+			}
+			File tempFile 	  = new File("temp.txt");
+			BufferedReader br = new BufferedReader(new FileReader(inFile));
+			PrintWriter pw 	  = new PrintWriter(new FileWriter(tempFile));
+			while ((line = br.readLine()) != null) 
+			{
+				fileElements = line.split(","); 
+				if (!fileElements[pos].equals(itemInLineToDel)) 
+				{
+				pw.println(line);
+				pw.flush();
+				}
+			}
+			pw.close();
+			br.close();
+			//Delete the original file
+			if (!inFile.delete()) 
+			{
+			System.out.println("Could not delete file");
+			return;
+			} 
+			//Rename the new file to the filename the original file had.
+			if (!tempFile.renameTo(inFile)) 
+			{
+				System.out.println("Could not rename file");
+				return;
+			}
+       } 
+		catch (FileNotFoundException ex) 
+		{
+          ex.printStackTrace();
+        } 
+		catch (IOException ex) 
+		{
+         ex.printStackTrace();
+        }
+	}
+		
+	public static boolean nameExists(String email)
+	{
+		boolean found = false;
+		for (int i = 0;i< users.size();i++)
+		{
+			if (users.get(i).getEmail().equals(email))
+			{
 				found = true;
+				return found;
+			}
 		}
 		return found;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	  * Checks if an inputted string is a valid email address by comparing it to
+	  * a simple email pattern
+	  * Input: Takes an email string
+	  * Output: Returns a true boolean value if the email matches the pattern and 
+	  * returns false if it does not
+	  **/
+	public static boolean validEmail(String email)
+	{
+		boolean isValid = false; 
+		String pattern  = ("^[a-zA-Z0-9]+@[a-zA-Z0-9]+(.[a-zA-Z]{2,})$");
+		
+		if (email.matches(pattern))
+			isValid = true;
+		
+		return isValid;
 	}
 }
