@@ -256,3 +256,49 @@ public class main
 		return found;
 	} 
 }
+
+//public class restoreDetails
+{
+ public static void main(String[] args)
+ {
+ 
+ }
+ public static void restore()
+ {
+  String userInfo=readFile(Users.txt);
+  
+ }
+ 
+ public static String readFile(String textFile)
+	{
+		String fileText="";
+		String x="";
+		try
+		{
+		FileReader reader=new FileReader(textFile);
+		Scanner in=new Scanner(reader);
+		while(in.hasNext())
+		{
+			x=in.nextLine();
+			fileText=fileText+x+",";
+		}
+		in.close();
+		reader.close();
+		}
+		catch(Exception e)
+		{}
+		return fileText;
+	}
+	
+	public static void createNewUser1()
+	{
+		String email=menuBox("Please enter an email:");
+		String password=generatePassword();
+		int userType=2;
+		int userId=users.size()+1;
+		User newUser=new User(userId,email,password,userType);
+		users.add(newUser);
+		String info=userId+","+email+","+password+","+userType;
+		writeFile(info,userFileName);
+	}
+}//
