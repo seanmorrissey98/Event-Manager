@@ -171,10 +171,11 @@ public class Main
 		String password	= generatePassword();
 		int userType	= 2;
 		int userId 		= users.size()+1;
-		String info		= aUser.userToString();
+		
 		User aUser;
 		aUser 			= new User(userId, email, password, userType);
 		users.add(aUser);
+		String info		= aUser.userToString();
 		writeFile(info,userFileName);
 	}
 	
