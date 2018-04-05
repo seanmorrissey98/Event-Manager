@@ -79,4 +79,16 @@ public class Driver
 	{
 		System.out.println("USER");
 	}
+	
+	
+		public static boolean nameExists(String email) //Diff version searching ArrayList instead of file
+	{ 
+		boolean found = false;	
+		for (int i = 0;i<users.size()-1;i++)
+		{
+			if (users.get(0).getEmail().equals(email))
+				found = true;
+		}
+		return found;
+	}
 }
