@@ -338,5 +338,29 @@ public class Main
 		}
 		return selection;
 	}
-	
+	/*
+		public static void createNewFacility() //WORKS NOW, HOWEVER RESTORING DOESNT SEEM TO WORK FOR FACILITIES FROM FILE 
+	{
+		Facility aFacility;
+		LocalDate aDate;
+		String date = "";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		int facilityId		= facilities.size()+1; //WONT WORK WITH REMOVE FACILITY CAPABILITY **SHOULD TAKE LARGEST ID IN ARRAYLIST AND +1
+		String facilityName = menuBox("Please enter a facility Name:");
+		double pricePerHour = menuBoxInt("please enter a price per hour:");
+		int choice			= JOptionPane.showConfirmDialog (null, "Do you wish to decommission this facility until a given date?","Create Facility", JOptionPane.YES_NO_OPTION);
+		
+		if(choice == JOptionPane.YES_OPTION)
+		{
+			date = menuBox("Please enter a date:");
+			aDate =  LocalDate.parse(date, formatter);
+			aFacility = new Facility(facilityId, facilityName, pricePerHour, aDate);
+		}
+		else
+			aFacility = new Facility(facilityId, facilityName, pricePerHour);
+			facilities.add(aFacility);
+			String info = aFacility.facilityToString();
+			writeFile(info,facilityFileName);
+	}
+	*/
 }
