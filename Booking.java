@@ -1,14 +1,19 @@
 import java.util.*;
+import java.text.*;
+import java.time.*;
+import java.time.format.*;
 public class Booking
 {
 	public int bookingId;
 	public int facilityId;
 	public int userId;
-	public Date bookingDate;
+	public LocalDate bookingDate;
 	public int bookingSlot;
 	public boolean paymentStatus;
-	//Bookingdate maybe as Date*****FIX LIKE USER/FACILITY
-	public Booking(int bookingId, int facilityId, int userId, Date bookingDate, int bookingSlot, boolean paymentStatus)
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+	//FOR RESTORING - MAY ADD FURTHER CONSTRUCTORS
+	public Booking(int bookingId, int facilityId, int userId, LocalDate bookingDate, int bookingSlot, boolean paymentStatus)
 	{
 		this.bookingId 		= bookingId;
 		this.facilityId 	= facilityId;
@@ -33,7 +38,7 @@ public class Booking
 		return userId;
 	}
 	
-	public Date getBookingDate()
+	public LocalDate getBookingDate()
 	{
 		return bookingDate;
 	}
@@ -48,6 +53,20 @@ public class Booking
 		return paymentStatus;
 	}
 	
+	public String bookingToString()
+	{
+		String temp = bookingDate.format(formatter);
+		String info = bookingId + "," + facilityId + "," + userId + "," + temp + "," + bookingSlot + "," + paymentStatus;
+		return info;
+	}
+
+	public void setBookingDate(String aDate)
+	{
+		this.bookingDate = LocalDate.parse(aDate);
+	}
 	
-	//SETS TO BE ADDED
+	public void setBookingDate(LocalDate aDate)
+	{
+		this.bookingDate = aDate;
+	}
 }
