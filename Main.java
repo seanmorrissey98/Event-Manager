@@ -338,6 +338,84 @@ public class Main
 		}
 		return selection;
 	}
+	
+	//TESTING 
+		public static boolean isValidDate(String text) throws Exception
+	{
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		try 
+		{
+			LocalDate.parse(text, formatter);
+			return true;
+		} 
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+	
+	public static void createNewFacility()throws Exception 
+	{
+		Facility aFacility;
+		String date;
+		int facilityId;
+		int temp = 0;
+		boolean found = true;
+		try
+		{
+			for (int j=0;j<facilities.size();j++)
+			{
+				if (facilities.get(j).getFacilityId() > temp)
+					temp = facilities.get(j).getFacilityId();
+				
+			}
+			facilityId = temp + 1;
+			
+			String facilityName = menuBox("Please enter a facilityName:");
+			while (found)
+			{
+				found = false;
+				for (int i=0;i<facilities.size();i++)
+				{
+					if (facilities.get(i).getFacilityName().equals(facilityName))
+						found = true;
+				}
+				if (found)
+					facilityName = menuBox("Facility already exists.\nPlease enter another facility name:");
+			}	
+			
+			double pricePerHour 	= menuBoxInt("please enter a price per hour:");
+			int decommissionChoice 	= JOptionPane.showConfirmDialog (null, "Do you want to decommission this facility?","Facility",JOptionPane.YES_NO_OPTION);
+			
+			if (decommissionChoice == JOptionPane.YES_OPTION)
+			{
+				date = menuBox("Please enter a date:");
+				while(!(isValidDate(date)))
+				{
+					date = menuBox("Please enter a valid date:\nFormat(dd/mm/yyyy)");
+					isValidDate(date);
+				}
+				aFacility = new Facility(facilityId, facilityName, pricePerHour, date);
+			}
+			else
+				aFacility = new Facility(facilityId, facilityName, pricePerHour);
+			
+			facilities.add(aFacility);
+			String info = aFacility.facilityToString();
+			System.out.println(info);
+			writeFile(info,facilityFileName);
+		}
+		catch(Exception e)
+		{}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	/*
 		public static void createNewFacility() //WORKS NOW, HOWEVER RESTORING DOESNT SEEM TO WORK FOR FACILITIES FROM FILE 
 	{
