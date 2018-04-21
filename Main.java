@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.util.*;
 import java.time.*;
 import java.time.format.*;
-public class main
+public class Main
 {
 	final static String userFileName="Users.txt";
 	final static String facilityFileName="Facilities.txt";
